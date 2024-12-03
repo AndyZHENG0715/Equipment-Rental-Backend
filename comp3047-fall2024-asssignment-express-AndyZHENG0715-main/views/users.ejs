@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rent it!</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body>
+  <%- include('navbar') %>
+
+  <div class="container-fluid mt-2">
+    <div class="d-flex justify-content-between align-items-center">
+      <nav style="--bs-breadcrumb-divider: '/';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/users" class="text-decoration-none">User</a></li>
+          <li class="breadcrumb-item"><a class="text-decoration-none"></a></li>
+
+        </ol>
+      </nav>
+      <a class="btn btn-primary" href="/user/new" role="button">New</a>
+    </div>
+  </div>
+
+
+  <table class="container table">
+    <tr>
+      <th>Volunteer Name</th>
+      <th>Email</th>
+      <th>Contact Number</th>
+      <th>Action</th>
+    </tr>
+  <% for (var users of users) { %>
+    
+      <tr>
+          <td><%= users.usersName %></td>
+          <td><%= users.usersEmail %></td>
+          <td><%= users.contactNum %></td>
+          <td><a class="btn btn-primary" href="/user/edit/<%= users._id %>" role="button">Edit</a></td>
+      </tr>
+  <% } %>
+  
+  </table>
+
+  <div class="container">
+    <% for (let i = 1; i <= Math.ceil(total / perPage); i++) { %>
+      <% if(i === page) { %>
+        <span><%= i %></span>
+      <% } else { %>
+        <a href="/users?page=<%= i %>&perPage=<%= perPage %>"><%= i %></a>
+      <% } %>
+    <% } %>
+ </div>
+  
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
+    crossorigin="anonymous"></script>
+</body>
+</html>
