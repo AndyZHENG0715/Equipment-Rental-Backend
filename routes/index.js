@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { connectToDB } = require('../utils/db');
+const { generateToken } = require('../utils/auth');
 const ObjectId = require('mongodb').ObjectId;
 
 // Home Page - Display Highlighted Equipments

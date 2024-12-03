@@ -6,6 +6,7 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const equipRouter = require('./routes/equipments');
+const authRouter = require('./routes/auth');
 const { connectToDB } = require('./utils/db');
 
 const app = express();
@@ -22,8 +23,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/api/users', usersRouter);
+app.use('/api/users', auth.authenticate, usersRouter);
 app.use('/api/equipments', equipRouter);
+app.use('/api', authRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -41,5 +43,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+process.env.TOKEN_SECRET = 'secret';
 
 module.exports = app;

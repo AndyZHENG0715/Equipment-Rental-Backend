@@ -6,6 +6,8 @@ This project involves developing a web system to manage equipment rentals for th
 
 ### Functional Requirements
 
+#### Frontend
+
 - **Homepage**:
   - [x] Display highlighted equipment available for rent using Bootstrap 5 Carousel.
   - [x] Display a calendar under the Carousel showing rented equipment.
@@ -47,36 +49,64 @@ This project involves developing a web system to manage equipment rentals for th
   - [x] Add a navbar with links appropriate to the user's role.
   - [x] Include a logout button.
 
-### Technical Requirements
+#### Backend
 
-- **Frontend**:
-  - [x] Use Vue 3 with Vue Router and Bootstrap 5 for the UI.
-  - [x] Communicate with the backend using RESTful APIs.
-  - [x] Maintain the frontend code in a Git repository.
-
-- **Backend**:
-  - [x] Use Node.js and Express.js for the server.
-  - [x] Connect to MongoDB to store equipment and user information.
-  - [x] Implement RESTful API endpoints:
+- **API Endpoints**:
+  - **Equipments**:
     - [x] `GET /api/equipments`: Get all equipment, optionally handle search queries.
     - [x] `POST /api/equipments`: Add a new equipment.
     - [x] `GET /api/equipments/:id`: Get equipment by ID.
     - [x] `PUT /api/equipments/:id`: Update equipment by ID.
     - [x] `DELETE /api/equipments/:id`: Delete equipment by ID.
     - [x] `POST /api/equipments/:id/rent`: Rent equipment by ID.
+  - **Users**:
     - [ ] `GET /api/users`: Get all users (admin only).
     - [ ] `POST /api/users`: Add a new user (admin only).
     - [ ] `GET /api/users/:id`: Get user by ID (admin only).
     - [ ] `PUT /api/users/:id`: Update user by ID (admin only).
     - [ ] `DELETE /api/users/:id`: Delete user by ID (admin only).
+  - **Authentication**:
     - [ ] `POST /api/login`: Authenticate user and generate JWT token.
-  - [x] Implement role-based access control to protect sensitive API endpoints.
-  - [x] Maintain the backend code in a Git repository.
 
-- **General**:
-  - [x] Frontend and backend should run independently.
-  - [x] Code should be well-organized and follow best practices.
-  - [x] Regularly commit code with meaningful messages.
+- **Role-Based Access Control**:
+  - [x] Implement role-based access control to protect sensitive API endpoints.
+
+### Technical Requirements
+
+#### Frontend
+
+- [x] Use Vue 3 with Vue Router and Bootstrap 5 for the UI.
+- [x] Communicate with the backend using RESTful APIs.
+- [x] Maintain the frontend code in a Git repository.
+
+#### Backend
+
+- [x] Use Node.js and Express.js for the server.
+- [x] Connect to MongoDB to store equipment and user information.
+- [x] Implement RESTful API endpoints:
+  - **Equipments**:
+    - `GET /api/equipments`: Get all equipment, optionally handle search queries.
+    - `POST /api/equipments`: Add a new equipment.
+    - `GET /api/equipments/:id`: Get equipment by ID.
+    - `PUT /api/equipments/:id`: Update equipment by ID.
+    - `DELETE /api/equipments/:id`: Delete equipment by ID.
+    - `POST /api/equipments/:id/rent`: Rent equipment by ID.
+  - **Users**:
+    - `GET /api/users`: Get all users (admin only).
+    - `POST /api/users`: Add a new user (admin only).
+    - `GET /api/users/:id`: Get user by ID (admin only).
+    - `PUT /api/users/:id`: Update user by ID (admin only).
+    - `DELETE /api/users/:id`: Delete user by ID (admin only).
+  - **Authentication**:
+    - `POST /api/login`: Authenticate user and generate JWT token.
+- [x] Implement role-based access control to protect sensitive API endpoints.
+- [x] Maintain the backend code in a Git repository.
+
+#### General
+
+- [x] Frontend and backend should run independently.
+- [x] Code should be well-organized and follow best practices.
+- [x] Regularly commit code with meaningful messages.
 
 ### Git Repositories for Submission
 

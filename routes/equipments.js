@@ -1,6 +1,8 @@
 const express = require('express');
 const { connectToDB } = require('../utils/db');
 const router = express.Router();
+const { authenticate } = require('../utils/auth');
+const ObjectId = require('mongodb').ObjectId;
 
 router.get('/', async function(req, res, next) {
   const db = await connectToDB();
@@ -41,6 +43,11 @@ router.post('/', async function (req, res) {
     } finally {
         await db.client.close();
     }
+});
+
+// Example: Protecting the rent endpoint
+router.post('/:id/rent', authenticate, async (req, res) => {
+    // Rental logic here
 });
 
 module.exports = router;
