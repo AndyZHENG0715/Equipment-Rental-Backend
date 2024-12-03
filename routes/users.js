@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { connectToDB } = require('../utils/db');
 const ObjectId = require('mongodb').ObjectId;
+const { authenticate, authorizeRole } = require('../utils/auth');
 
 // Get all users (admin only)
-router.get('/', authenticateToken, authorizeRole('admin'), async (req, res) => {
+router.get('/', authenticate, authorizeRole('admin'), async (req, res) => {
     try {
         const db = await connectToDB();
         const users = await db.collection('users').find().toArray();
@@ -16,7 +17,7 @@ router.get('/', authenticateToken, authorizeRole('admin'), async (req, res) => {
 });
 
 // Add a new user (admin only)
-router.post('/', authenticateToken, authorizeRole('admin'), async (req, res) => {
+router.post('/', authenticate, authorizeRole('admin'), async (req, res) => {
     const { email, password, name, contactNum, department, remark, terms, role } = req.body;
     
     // Basic validation
@@ -51,7 +52,7 @@ router.post('/', authenticateToken, authorizeRole('admin'), async (req, res) => 
 });
 
 // Get user by ID (admin only)
-router.get('/:id', authenticateToken, authorizeRole('admin'), async (req, res) => {
+router.get('/:id', authenticate, authorizeRole('admin'), async (req, res) => {
     const userId = req.params.id;
     
     try {
@@ -72,7 +73,7 @@ router.get('/:id', authenticateToken, authorizeRole('admin'), async (req, res) =
 });
 
 // Update user by ID (admin only)
-router.put('/:id', authenticateToken, authorizeRole('admin'), async (req, res) => {
+router.put('/:id', authenticate, authorizeRole('admin'), async (req, res) => {
     const userId = req.params.id;
     const { email, name, contactNum, department, remark, terms, role } = req.body;
     
@@ -107,11 +108,13 @@ router.put('/:id', authenticateToken, authorizeRole('admin'), async (req, res) =
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Internal Server Error' });
+    } finally {
+        await db.client.close();
     }
 });
 
-// Delete user by ID
-router.delete('/:id', async function (req, res) {
+// Delete user by ID (admin only)
+router.delete('/:id', authenticate, authorizeRole('admin'), async (req, res) => {
     const db = await connectToDB();
     try {
         let result = await db.collection("users").deleteOne({ _id: new ObjectId(req.params.id) });

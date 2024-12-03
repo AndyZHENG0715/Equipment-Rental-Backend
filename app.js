@@ -2,12 +2,15 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const jwt = require('jsonwebtoken');
+const { ObjectId } = require('mongodb');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const equipRouter = require('./routes/equipments');
 const authRouter = require('./routes/auth');
 const { connectToDB } = require('./utils/db');
+const { authenticate, authorizeRole, extractToken } = require('./utils/auth');
 
 const app = express();
 
@@ -21,9 +24,29 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(async (req, res, next) => {
+    const token = extractToken(req);
+    if (token) {
+        try {
+            const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+            const db = await connectToDB();
+            const user = await db.collection('users').findOne({ _id: new ObjectId(decoded.userId) });
+
+            if (user) {
+                res.locals.user = { userId: user._id, role: user.role, name: user.name };
+            }
+            await db.client.close();
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    next();
+});
+
+// Mount routers
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/api/users', auth.authenticate, usersRouter);
+app.use('/api/users', authenticate, usersRouter);
 app.use('/api/equipments', equipRouter);
 app.use('/api', authRouter);
 

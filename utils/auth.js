@@ -2,20 +2,18 @@ const { connectToDB, ObjectId } = require("./db");
 const jwt = require('jsonwebtoken');
 
 // Secret key for JWT
-process.env.TOKEN_SECRET = 'secret'; // Note: Use environment variables in production
+process.env.TOKEN_SECRET = 'secret'; // Use environment variables in production
 
 // Generate JWT Token and store it in the database
 const generateToken = async (user) => {
-    // Remove sensitive data from the user object  
     const userData = { userId: user._id, role: user.role };
-
     const token = jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '24h' });
 
     const db = await connectToDB();
     try {
         await db.collection("users").updateOne(
             { _id: new ObjectId(user._id) },
-            { $addToSet: { tokens: token } } // Add the new token to the array
+            { $addToSet: { tokens: token } }
         );
         return token;
     } catch (err) {
@@ -30,9 +28,9 @@ const generateToken = async (user) => {
 const extractToken = (req) => {
     const authHeader = req.headers.authorization;
     if (authHeader && authHeader.startsWith('Bearer ')) {
-        return authHeader.split(' ')[1]; // Return the token part
+        return authHeader.split(' ')[1];
     }
-    return null; // Return null if no token is found
+    return null;
 };
 
 // Authenticate Middleware
@@ -50,7 +48,6 @@ const authenticate = async (req, res, next) => {
             return res.status(401).send("Unauthorized: Invalid token");
         }
 
-        // Verify token validity
         jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
             if (err) {
                 return res.status(403).json({ message: "Forbidden: Invalid token" });
@@ -98,4 +95,15 @@ const verifyToken = async (req, res, next) => {
     next();
 };
 
-module.exports = { generateToken, authenticate, extractToken, removeToken, verifyToken };
+// Authorization Middleware
+const authorizeRole = (role) => {
+    return (req, res, next) => {
+        if (req.user && req.user.role === role) {
+            next();
+        } else {
+            res.status(403).json({ message: "Forbidden: Insufficient privileges" });
+        }
+    };
+};
+
+module.exports = { generateToken, authenticate, extractToken, removeToken, verifyToken, authorizeRole };
