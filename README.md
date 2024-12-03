@@ -58,7 +58,7 @@ This project involves developing a web system to manage equipment rentals for th
   - [x] Use Node.js and Express.js for the server.
   - [x] Connect to MongoDB to store equipment and user information.
   - [x] Implement RESTful API endpoints:
-    - [ ] `GET /api/equipments`: Get all equipment, optionally handle search queries.
+    - [x] `GET /api/equipments`: Get all equipment, optionally handle search queries.
     - [x] `POST /api/equipments`: Add a new equipment.
     - [x] `GET /api/equipments/:id`: Get equipment by ID.
     - [x] `PUT /api/equipments/:id`: Update equipment by ID.

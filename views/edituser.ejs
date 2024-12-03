@@ -25,16 +25,16 @@
 
     <form class="container" method="POST" action="/users/edit/<%= users._id %>">
         <div class="col-md-6 mt-4">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" value="<%= users.email %>" required>
+            <label for="userEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="userEmail" name="userEmail" value="<%= users.userEmail %>" required>
         </div>
         <div class="col-md-6 mt-3">
             <label for="password" class="form-label">Reset Password</label>
             <input type="password" class="form-control" id="password" name="password" required>
         </div>        
         <div class="col-md-6 mt-3">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" name="name" value="<%= users.name %>" required>
+            <label for="userName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="userName" name="userName" value="<%= users.userName %>" required>
         </div>
         <div class="col-md-6 mt-3">
             <label for="contactNum" class="form-label">Contact Number</label>

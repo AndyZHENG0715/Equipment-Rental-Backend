@@ -1,4 +1,3 @@
-const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -8,7 +7,6 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const equipRouter = require('./routes/equipments');
 const { connectToDB } = require('./utils/db');
-const { ObjectId } = require('mongodb');
 
 const app = express();
 
@@ -29,6 +27,7 @@ app.use('/api/equipments', equipRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  const createError = require('http-errors');
   next(createError(404));
 });
 

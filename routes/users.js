@@ -103,4 +103,30 @@ router.delete('/:id', async function (req, res) {
     }
 });
 
+// POST route for deleting a user
+router.post('/delete/:id', async (req, res) => {
+    const userId = req.params.id;
+    let db;
+
+    try {
+        db = await connectToDB();
+        const result = await db.collection('users').deleteOne({ _id: new ObjectId(userId) });
+
+        if (result.deletedCount === 1) {
+            // Successfully deleted
+            res.redirect('/users');
+        } else {
+            // User not found
+            res.status(404).render('error', { message: 'User not found', error: {} });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).render('error', { message: 'Internal Server Error', error: err });
+    } finally {
+        if (db) {
+            await db.client.close();
+        }
+    }
+});
+
 module.exports = router;

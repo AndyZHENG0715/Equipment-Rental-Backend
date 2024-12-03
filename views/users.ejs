@@ -35,8 +35,8 @@
   <% for (var users of users) { %>
     
       <tr>
-          <td><%= users.usersName %></td>
-          <td><%= users.usersEmail %></td>
+          <td><%= users.userName %></td>
+          <td><%= users.userEmail %></td>
           <td><%= users.contactNum %></td>
           <td><a class="btn btn-primary" href="/user/edit/<%= users._id %>" role="button">Edit</a></td>
       </tr>

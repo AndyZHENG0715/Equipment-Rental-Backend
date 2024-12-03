@@ -171,7 +171,7 @@ router.get('/users', async function (req, res) {
 
 // New User Form
 router.get('/user/new', (req, res) => {
-  res.render('newUser');
+  res.render('newuser');
 });
 
 router.post('/user/new', async (req, res) => {
@@ -202,7 +202,7 @@ router.get('/user/edit/:id', async (req, res) => {
   try {
     const db = await connectToDB();
     const user = await db.collection('users').findOne({ _id: new ObjectId(userId) });
-    res.render('editUser', { users: user });
+    res.render('edituser', { users: user });
   } catch (err) {
     console.error(err);
     res.redirect('/users');
