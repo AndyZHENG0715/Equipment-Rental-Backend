@@ -120,19 +120,31 @@ router.get('/equipment/detail/:id', async (req, res) => {
 
 // Search Equipment Route
 router.get('/search/:query', async (req, res) => {
-    const searchQuery = req.params.query;
-    try {
-        const db = await connectToDB();
-        const equipments = await db.collection('equipments').find({
-            name: { $regex: searchQuery, $options: 'i' }
-        }).toArray();
-        res.render('search', { equipments, query: searchQuery });
-    } catch (err) {
-        console.error(err);
-        res.render('search', { equipments: [], query: searchQuery, error: 'Error fetching search results.' });
-    } finally {
-        await db.client.close();
+  const searchQuery = req.params.query;
+  let db; // Declare db outside the try block
+  try {
+    db = await connectToDB();
+    const equipments = await db.collection('equipments').find({
+      name: { $regex: searchQuery, $options: 'i' }
+    }).toArray();
+    
+    res.render('search', { 
+      equipments, 
+      query: searchQuery, 
+      error: null // Ensure error is defined
+    });
+  } catch (err) {
+    console.error(err);
+    res.render('search', { 
+      equipments: [], 
+      query: searchQuery, 
+      error: 'Error fetching search results.' 
+    });
+  } finally {
+    if (db) { // Check if db is defined before closing
+      await db.client.close();
     }
+  }
 });
 
 // Users Page - Display All Users
